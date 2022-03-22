@@ -1,2 +1,2 @@
 # TrainingApp
-This is a trainingApp that can do sick things
+This is a training App that can do sick things
