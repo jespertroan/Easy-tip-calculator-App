@@ -1,2 +1,2 @@
-# TrainingApp
-This is a training App that can do sick things
+#Easy tip calculator App
+This is a easy tip calculator that is easy to use
