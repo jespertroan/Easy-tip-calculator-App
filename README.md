@@ -1,2 +1,2 @@
 # EasytipcalculatorApp
-This is a easy tip calculator that is easy to use
+This is a easy tip calculator :)
