@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableWithoutFeedback, Pressable, TextInput, Keyboard} from 'react-native';
+import { StyleSheet, Text, View, TouchableWithoutFeedback, Pressable, ScrollView, TextInput, Keyboard} from 'react-native';
 import Slider from '@react-native-community/slider';
 
 function Homescreen() {
@@ -9,15 +9,40 @@ function Homescreen() {
   const [tip, setTip] = useState(10);
   const [tipTotal, setTipTotal] = useState(0);
   const [numberSplit, setNumberSplit] = useState(1);
-  const [amountPerPerson, setAmountPerPerson] = useState(0);
- {/*Hide keyboard*/}
-  const HideKeyboard = ({ children }) => (                            
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      {children}
-    </TouchableWithoutFeedback>
-  );
+  const [amountPerPerson, setAmountPerPerson] =  useState(0);
+  
+  const calculateTip = (value, tip, numberSplit) => {
+    setAmountTotal(0);  //Reset total amount
+    setTip(tip);        //Set states
+    setAmount(value);
+    setNumberSplit(numberSplit);
+    setAmountPerPerson(0);
+    const intValue = parseInt(value);   //Parse to int
+    if (tip == 0){
+      setAmountTotal(value);    //Set total Amount to value if tip percentage is zero
+      const amountPerPersonTemp = value / numberSplit;
+      setAmountPerPerson(amountPerPersonTemp.toFixed(2));
+      if(numberSplit == 1) {
+        setAmountPerPerson(0);
+      }
+    }
+    if (value > 0 && tip > 0) {
+      const tipAmountTemp = intValue * (tip / 100);  //Calculate tipamount in a temp variable
+      const totalAmountTemp = intValue * (1 + tip / 100);   //Calculate total amount in a temp variable
+      setTipTotal(tipAmountTemp);     //Set states
+      setAmountTotal(totalAmountTemp.toFixed(2));
+      if (numberSplit > 1){
+        const amountPerPersonTemp = totalAmountTemp / numberSplit;
+        setAmountPerPerson(amountPerPersonTemp.toFixed(2));
+      }
+    } 
+    else return;
+  }
+  
 
   return (
+    <ScrollView  keyboardShouldPersistTaps='handled' scrollEnabled={false}>    
+    {/*Hide keyboard on tap outside keyboard*/}  
       <View style={styles.container}>
         <View style={styles.container1}>
           <View style={styles.row}>
@@ -30,37 +55,37 @@ function Homescreen() {
           </View>
           <View style={styles.line}></View>
           <View style={styles.row2}>
-            <Text style={styles.normalText2space}>Type Total:</Text>
-                <TextInput 
-                  style={styles.input}
-                  keyboardType='numeric'
-                  onChangeText={value => setAmount(value)}
-                  value={amount}
-                  placeholder="amount"
-                  maxLength={10}
-                />
-
+            <Text style={styles.normalText2space}>Type amount:</Text>
+              <TextInput 
+                style={styles.input}
+                keyboardType='numeric'
+                placeholderTextColor='rgba(255, 255, 255, 0.5)' 
+                onChangeText={text => {calculateTip(text, tip, numberSplit)}}
+                
+                placeholder="amount"
+                maxLength={4}
+              />
           </View>
           <View style={styles.row3}>
             <Text style={styles.normalText3space}>Tip</Text>
-            <Text style={styles.normalText3}>{amount}%</Text>
+            <Text style={styles.normalText3}>{tip}%</Text>
           </View>
         </View>
         <Text style={styles.percentageText}>Tip Percentage</Text>
         <View style={styles.TipButtons}>
-          <Pressable onPress={() => { setTip(10);}} style={({ pressed }) => [
+          <Pressable onPress={() => { calculateTip(amount, 10, numberSplit);}} style={({ pressed }) => [
                   styles.button,
                   { opacity: pressed ? 0.3 : 1 },
                 ]}>
             <Text style = {styles.buttontext}>10%</Text>
           </Pressable>
-          <Pressable onPress={() => { setTip(15);}} style={({ pressed }) => [
+          <Pressable onPress={() => { calculateTip(amount, 15, numberSplit);}} style={({ pressed }) => [
                   styles.button,
                   { opacity: pressed ? 0.3 : 1 },
                 ]}>
             <Text style = {styles.buttontext}>15%</Text>
           </Pressable>
-          <Pressable onPress={() => { setTip(20);}} style={({ pressed }) => [
+          <Pressable onPress={() => { calculateTip(amount, 20, numberSplit);}} style={({ pressed }) => [
                   styles.button,
                   { opacity: pressed ? 0.3 : 1 },
                 ]}>
@@ -74,7 +99,7 @@ function Homescreen() {
             value = {tip}
             minimumValue={0}
             maximumValue={50}
-            onValueChange = {(value) => {setTip(value)}}
+            onValueChange = {(value) => { calculateTip(amount, value, numberSplit)}}
             step={1}
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#000000"
@@ -85,13 +110,14 @@ function Homescreen() {
             value = {numberSplit}
             minimumValue={1}
             maximumValue={30}
-            onValueChange = {(value) => {setNumberSplit(value)}}
+            onValueChange = {(value) => {calculateTip(amount, tip, value)}}
             step={1}
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#000000"
           />
         </View>
         </View>
+        </ScrollView>
   );
 }
 const styles = StyleSheet.create({
