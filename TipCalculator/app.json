@@ -1,12 +1,13 @@
 {
   "expo": {
-    "name": "TrainingApp",
-    "slug": "TrainingApp",
+    "name": "Easy Tip Calculator",
+    "slug": "Easy-Tip-Calculator",
+    "description": "This is a easy to use tip calculator created to calculate tips and splits among persons.",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/app-icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/app-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
