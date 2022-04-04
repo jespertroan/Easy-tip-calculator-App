@@ -32,7 +32,7 @@ function Homescreen() {
       setTipTotal(tipAmountTemp);     //Set states
       setAmountTotal(totalAmountTemp.toFixed(2));
       if (numberSplit > 1){
-        const amountPerPersonTemp = totalAmountTemp / numberSplit;
+        const amountPerPersonTemp = totalAmountTemp / numberSplit;   //Calculate sum per person
         setAmountPerPerson(amountPerPersonTemp.toFixed(2));
       }
     } 
@@ -56,15 +56,15 @@ function Homescreen() {
           <View style={styles.line}></View>
           <View style={styles.row2}>
             <Text style={styles.normalText2space}>Type amount:</Text>
-              <TextInput 
-                style={styles.input}
-                keyboardType='numeric'
-                placeholderTextColor='rgba(255, 255, 255, 0.5)' 
-                onChangeText={text => {calculateTip(text, tip, numberSplit)}}
-                
-                placeholder="amount"
-                maxLength={4}
-              />
+            <TextInput 
+              style={styles.input}
+              keyboardType='numeric'
+              placeholderTextColor='rgba(255, 255, 255, 0.5)' 
+              //Run calculatetip function when input are changed
+              onChangeText={text => {calculateTip(text, tip, numberSplit)}}
+              placeholder="amount"
+              maxLength={4}
+            />
           </View>
           <View style={styles.row3}>
             <Text style={styles.normalText3space}>Tip</Text>
@@ -74,21 +74,21 @@ function Homescreen() {
         <Text style={styles.percentageText}>Tip Percentage</Text>
         <View style={styles.TipButtons}>
           <Pressable onPress={() => { calculateTip(amount, 10, numberSplit);}} style={({ pressed }) => [
-                  styles.button,
-                  { opacity: pressed ? 0.3 : 1 },
-                ]}>
+            styles.button,
+            { opacity: pressed ? 0.3 : 1 },  //Run calculatetip function and set opacity to 0,3 if button is pressed
+            ]}>
             <Text style = {styles.buttontext}>10%</Text>
           </Pressable>
           <Pressable onPress={() => { calculateTip(amount, 15, numberSplit);}} style={({ pressed }) => [
-                  styles.button,
-                  { opacity: pressed ? 0.3 : 1 },
-                ]}>
+            styles.button,
+            { opacity: pressed ? 0.3 : 1 },
+            ]}>
             <Text style = {styles.buttontext}>15%</Text>
           </Pressable>
           <Pressable onPress={() => { calculateTip(amount, 20, numberSplit);}} style={({ pressed }) => [
-                  styles.button,
-                  { opacity: pressed ? 0.3 : 1 },
-                ]}>
+            styles.button,
+            { opacity: pressed ? 0.3 : 1 },
+            ]}>
             <Text style = {styles.buttontext}>20%</Text>
           </Pressable>
         </View>
@@ -99,10 +99,11 @@ function Homescreen() {
             value = {tip}
             minimumValue={0}
             maximumValue={50}
-            onValueChange = {(value) => { calculateTip(amount, value, numberSplit)}}
+            //Run calculatetip function when value are changed
+            onValueChange = {(value) => { calculateTip(amount, value, numberSplit)}}  
             step={1}
             minimumTrackTintColor="#FFFFFF"
-            maximumTrackTintColor="#000000"
+            maximumTrackTintColor="rgba(255, 255, 255, 0.5)"
           />
           <Text style = {styles.customText}>Choose split: {numberSplit}</Text>
           <Slider
@@ -110,16 +111,19 @@ function Homescreen() {
             value = {numberSplit}
             minimumValue={1}
             maximumValue={30}
+            //Run calculatetip function when value are changed
             onValueChange = {(value) => {calculateTip(amount, tip, value)}}
             step={1}
             minimumTrackTintColor="#FFFFFF"
-            maximumTrackTintColor="#000000"
+            maximumTrackTintColor="rgba(255, 255, 255, 0.5)"
           />
         </View>
-        </View>
-        </ScrollView>
+      </View>
+    </ScrollView>
   );
 }
+
+//Define styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -254,6 +258,14 @@ const styles = StyleSheet.create({
     borderRadius:35,
     backgroundColor: '#2196F3',
     marginTop: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.30,
+    shadowRadius: 4.65,
+    elevation: 8,
   },
   customText:{
     fontStyle: 'normal',
@@ -266,6 +278,7 @@ const styles = StyleSheet.create({
   },
   input:{
     fontStyle: 'normal',
+    borderRadius: 35,
     fontWeight: '400',
     fontSize: 24,
     lineHeight: 33,
@@ -273,7 +286,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#FFFFFF',
-    minWidth:82,
+    minWidth:95,
     textAlign: 'center',
   },
 });
